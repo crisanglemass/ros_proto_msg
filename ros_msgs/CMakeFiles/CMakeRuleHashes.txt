@@ -1,0 +1,5 @@
+# Hashes of file build rules.
+8a17d2dda3d4dfaaba617fa7e25c7575 CMakeFiles/clean_test_results
+b7cee8ba1a4bde507e1fd1495e88ca8b message_serialization/CMakeFiles/copy_serialization_files
+3f659d8758c3eeb73be9d793a999bdc9 message_traits/CMakeFiles/copy_traits_files
+4d6d515866f396a76977d425ac5373bb sample_protos/publish_info.pb.h

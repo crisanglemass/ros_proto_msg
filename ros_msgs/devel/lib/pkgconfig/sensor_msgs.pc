@@ -1,0 +1,8 @@
+prefix=/work/ros_msgs/devel
+
+Name: sensor_msgs
+Description: Description of sensor_msgs
+Version: 0.0.0
+Cflags: -I/work/ros_msgs/devel/include
+Libs: -L${prefix}/lib 
+Requires: roscpp rospy std_msgs message_runtime

@@ -1,0 +1,3 @@
+Time difference: 2.37269 seconds
+Time difference: 0.399629 seconds
+Time difference: 0.439973 seconds
