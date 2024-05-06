@@ -1,12 +1,12 @@
 import os
 import numpy as np
 
+current_dir = os.path.dirname(__file__)
 
-timediff_file_path = "timediff.txt"
+timediff_file_path = os.path.join(current_dir, "timediff.txt")
 
 # Create an empty array using NumPy
 timediff_array = np.array([])
-
 # Read the file line by line and parse the numbers
 with open(timediff_file_path, "r") as f:
     for line in f:
