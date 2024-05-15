@@ -35,6 +35,7 @@
 namespace ros {
 namespace serialization {
 // protobuffer serialization
+
 template <typename T>
 struct Serializer<T, typename std::enable_if<std::is_base_of<
                          ::google::protobuf::Message, T>::value>::type> {
@@ -42,13 +43,18 @@ struct Serializer<T, typename std::enable_if<std::is_base_of<
   inline static void write(Stream &stream, const T &t) {
     std::string pb_str;
     t.SerializeToString(&pb_str);
+    
     // 4个字节
     uint32_t len = (uint32_t)pb_str.size();
+    // 用ostream函数操作流对象
     stream.next(len);
-
+    // 可写流的位置，可写指针往前传递四个字节
     if (len > 0) {
       memcpy(stream.advance((uint32_t)len), pb_str.data(), len);
     }
+    // rosInfoSerializtionMsg(pb_str);
+
+
     // std::cout << "pb_str" << std::endl;
     // stream.next(pb_str);
   }
@@ -60,12 +66,11 @@ struct Serializer<T, typename std::enable_if<std::is_base_of<
     // IStream
     stream.next(len);
     // std::cout << "len: " << len << std::endl;
-
     std::string pb_str;
     if (len > 0) {
       const char *data_ptr =
           reinterpret_cast<const char *>(stream.advance(len));
-
+      // 强转赋值
       pb_str = std::string(data_ptr, len);
     } else {
       pb_str.clear();
@@ -78,7 +83,27 @@ struct Serializer<T, typename std::enable_if<std::is_base_of<
   inline static uint32_t serializedLength(const T &t) {
     std::string pb_str;
     t.SerializeToString(&pb_str);
+    // std::ostringstream hexStringStream;
+    // hexStringStream << std::hex << std::setfill('0');
+    // for (size_t i = 0; i < pb_str.size(); ++i) {
+    //   hexStringStream << std::setw(2)
+    //                   << static_cast<int>(
+    //                          static_cast<unsigned char>(pb_str[i]));
+    // }
+
     return 4 + (uint32_t)pb_str.size();
+  }
+
+  inline static void rosInfoSerializtionMsg(std::string pb_str){
+    // std::string pb_str;
+    // t.SerializeToString(&pb_str);
+    std::ostringstream hexStringStream;
+    hexStringStream << std::hex << std::setfill('0');
+    for (size_t i = 0; i < pb_str.size(); ++i) {
+      hexStringStream << std::setw(2)
+                      << static_cast<int>(
+                             static_cast<unsigned char>(pb_str[i]));
+    }
   }
 };
 

@@ -107,6 +107,7 @@ backwards compatibility with
 * Specializing the Serializer class is the only thing you need to do to get the
 ROS serialization system to work with a type.
 */
+// 传入的对象类型，模板偏特化，模板全特化
 template <typename T, typename Enable = void>
 struct Serializer {
   /**
@@ -492,6 +493,7 @@ inline uint32_t serializationLength(
 /**
  * \brief Array serializer, default implementation does nothing
  */
+// 默认模板参数
 template <typename T, size_t N, class Enabled = void>
 struct ArraySerializer {};
 
@@ -642,6 +644,7 @@ struct ROSCPP_SERIALIZATION_DECL Stream {
    * position before it was advanced. \throws StreamOverrunException if len
    * would take this stream past the end of its buffer
    */
+  // 前进几个字节并判断越界
   ROS_FORCE_INLINE uint8_t *advance(uint32_t len) {
     uint8_t *old_data = data_;
     data_ += len;
@@ -774,6 +777,7 @@ inline SerializedMessage serializeMessage(const M &message) {
   m.message_start = s.getData();
   // message_start 是字节流的起始位置
   serialize(s, message);
+
 
   return m;
 }

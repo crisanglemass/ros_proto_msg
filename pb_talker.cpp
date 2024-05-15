@@ -18,15 +18,15 @@ int main(int argc, char **argv) {
   proto_msg_info.set_name("test");
   proto_msg_info.set_message_type("test_message");
   proto_msg_info.set_publish_msg("1");
-
   int count = 0;
   while (ros::ok()) {
     ros::Time right_time=ros::Time::now();
     proto_msg_info.set_timestamp(right_time.toSec());
     pub.publish(proto_msg_info);
     // std::cerr << "DebugMsg: " << proto_msg_info.DebugString() << std::endl;
+    // uint32_t length = ros::serialization::Serializer<huizhang::sample::PublishInfo>::serializedLength(proto_msg_info);
+    // ROS_INFO("Serialized length of the message: %u", length);
     ros::spinOnce();
-
     loop_rate.sleep();
     ++count;
   }

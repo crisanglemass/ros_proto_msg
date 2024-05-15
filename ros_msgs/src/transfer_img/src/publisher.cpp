@@ -23,8 +23,8 @@ int main(int argc, char *argv[]) {
   transfer_img::Image p;
 
   // 读取base64
-  std::string image_path = "/work/images/image.jpg";
-  std::string base64String = imageToBase64(image_path);
+  // std::string image_path = "/work/images/image.jpg";
+  // std::string base64String = imageToBase64(image_path);
 
   p.id = 0;
   p.name = "test";
@@ -35,6 +35,24 @@ int main(int argc, char *argv[]) {
   while (ros::ok()) {
     ros::Time right_now = ros::Time::now();
     p.timestamp = right_now.toSec();
+
+    // // 序列化消息
+    // uint32_t serial_size = ros::serialization::serializationLength(p);
+    // boost::shared_array<uint8_t> buffer(new uint8_t[serial_size]);
+    // ros::serialization::OStream stream(buffer.get(), serial_size);
+    // ros::serialization::serialize(stream, p);
+
+    // // 将序列化后的字节流转换为十六进制字符串输出
+    // std::ostringstream hexStringStream;
+    // hexStringStream << std::hex << std::setfill('0');
+    // for (size_t i = 0; i < serial_size; ++i) {
+    //   hexStringStream << std::setw(2) << static_cast<int>(buffer[i]);
+    // }
+    // std::string hexString = hexStringStream.str();
+
+    // // 输出序列化后的十六进制字符串消息
+    // std::cout << "Serialized message (hex): " << hexString << std::endl;
+
     pub.publish(p);
     r.sleep();
     ros::spinOnce();

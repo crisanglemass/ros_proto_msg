@@ -26,13 +26,17 @@
  */
 
 // %Tag(FULLTEXT)%
+#include <sys/stat.h>
+
+#include <fstream>
+
+#include <ros/package.h>
 #include <ros/protobuffer_traits.h>
 #include <ros/serialization_protobuffer.h>
+
 #include "ros/ros.h"
+
 #include "publish_info.pb.h"
-#include <fstream> 
-#include <ros/package.h> 
-#include <sys/stat.h> 
 /**
  * This tutorial demonstrates simple receipt of messages over the ROS system.
  */
@@ -44,6 +48,16 @@
 //       ros::message_traits::Definition<huizhang::sample::PublishInfo>::value();
 //   std::cout << "def: " << def << std::endl;
 // }
+void saveTimeDifference(std::string filePath, double timeDiff) {
+  std::ofstream outFile(filePath, std::ios::app);
+  if (outFile.is_open()) {
+    outFile << "Time difference: " << timeDiff * 1e3 << " mseconds\n";
+    outFile.close();
+  } else {
+    ROS_ERROR("Failed to open file: %s", filePath.c_str());
+  }
+}
+
 void chatterCallback(
     const ros::MessageEvent<huizhang::sample::PublishInfo> &msg) {
   // std::cerr << "I heard: " << msg.getMessage()->DebugString() << std::endl;
@@ -55,18 +69,9 @@ void chatterCallback(
   double timeDiff = right_time.toSec() - timestamp;
   ROS_INFO("Time difference: %f mseconds", timeDiff * 1e3);
 
-
-  //store file to .txt 
+  // store file to .txt
   std::string filePath = "./data/timediff.txt";
-
-  // 打开文件并写入时间差
-  std::ofstream outFile(filePath, std::ios::app);
-  if (outFile.is_open()) {
-    outFile << "Time difference: " << timeDiff * 1e3 << " mseconds\n";
-    outFile.close();
-  } else {
-    ROS_ERROR("Failed to open file: %s", filePath.c_str());
-  }
+  saveTimeDifference(filePath, timeDiff);
 }
 // %EndTag(CALLBACK)%
 
